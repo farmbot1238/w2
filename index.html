@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متعاونين على التفوق - الامتحانات الوزارية السابقة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+        }
+
+        /* تأثير السحب في الخلفية */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="white" d="M20 40 Q 35 30 50 40 T 80 40 Q 90 50 80 60 T 20 60 Q 10 50 20 40"/></svg>');
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* الهيدر */
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #2c3e50;
+            font-size: 1.3em;
+            border-bottom: 3px solid #4A90E2;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* الأيقونات التزيينية */
+        .decorative-icons {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 2.5em;
+        }
+
+        .decorative-icons span {
+            margin: 0 15px;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .decorative-icons span:nth-child(2) { animation-delay: 0.5s; }
+        .decorative-icons span:nth-child(3) { animation-delay: 1s; }
+        .decorative-icons span:nth-child(4) { animation-delay: 1.5s; }
+
+        .welcome-message {
+            text-align: center;
+            color: white;
+            font-size: 2em;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* بطاقات اختيار نوع الامتحان */
+        .exam-type-selection {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .exam-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .exam-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .exam-card h3 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .exam-card p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* شبكة المواد */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .subject-card {
+            background: white;
+            padding: 35px 20px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .subject-card:hover {
+            transform: scale(1.05);
+            background: #1e3c72;
+            color: white;
+        }
+
+        .subject-icon {
+            font-size: 4em;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .subject-card h3 {
+            font-size: 1.5em;
+        }
+
+        /* أزرار الرجوع */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1em;
+            margin: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateX(5px);
+        }
+
+        /* صفحة الامتحان */
+        .exam-header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin: 20px;
+        }
+
+        .exam-header h3 {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #ddd;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4A90E2, #1e3c72);
+            border-radius: 6px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        #questionCounter {
+            font-size: 1.1em;
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        .question-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            line-height: 1.7;
+            font-weight: 600;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e8f0fe;
+            border-color: #4A90E2;
+        }
+
+        .option.selected {
+            background: #4A90E2;
+            color: white;
+            border-color: #1e3c72;
+        }
+
+        .option input[type="radio"] {
+            margin-left: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* أزرار التنقل */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .nav-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #4A90E2;
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* صفحة النتيجة */
+        .result-container {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-container h2 {
+            font-size: 2.2em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 220px;
+            height: 220px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A90E2, #1e3c72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5em;
+            font-weight: bold;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-details {
+            margin: 30px 0;
+            text-align: right;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .result-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-right: 5px solid;
+        }
+
+        .result-item.correct {
+            background: #d4edda;
+            color: #155724;
+            border-right-color: #28a745;
+        }
+
+        .result-item.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border-right-color: #dc3545;
+        }
+
+        .restart-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            background: #4A90E2;
+            transform: scale(1.05);
+        }
+
+        /* صفحة العنوان */
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 2.2em;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* للهواتف */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .exam-type-selection {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .nav-btn {
+                padding: 12px 30px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط العنوان العلوي -->
+    <div class="header">
+        <h1>متعاونين على التفوق</h1>
+        <p class="subtitle">موقع مخصص للامتحانات الوزارية السابقة - نظامي وتكميلي</p>
+    </div>
+
+    <!-- الصفحة الرئيسية -->
+    <div id="homePage" class="page active">
+        <!-- أيقونات جميلة -->
+        <div class="decorative-icons">
+            <span>📚</span>
+            <span>✨</span>
+            <span>⭐</span>
+            <span>📖</span>
+        </div>
+        
+        <h2 class="welcome-message">أهلاً بك في منصة متعاونين على التفوق</h2>
+        
+        <div class="exam-type-selection">
+            <div class="exam-card" onclick="showSubjects('نظامي')">
+                <div class="card-icon">📝</div>
+                <h3>امتحان نظامي</h3>
+                <p>الامتحانات الوزارية للدورة النظامية</p>
+            </div>
+            
+            <div class="exam-card" onclick="showSubjects('تكميلي')">
+                <div class="card-icon">📋</div>
+                <h3>امتحان تكميلي</h3>
+                <p>الامتحانات الوزارية للدورة التكميلية</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة اختيار المواد -->
+    <div id="subjectsPage" class="page">
+        <button class="back-btn" onclick="showHome()">← الرجوع للرئيسية</button>
+        <h2 id="examTypeTitle" class="page-title"></h2>
+        
+        <div class="subjects-grid">
+            <div class="subject-card" onclick="startExam('arabic')">
+                <span class="subject-icon">📘</span>
+                <h3>اللغة العربية</h3>
+            </div>
+            <div class="subject-card" onclick="startExam('english')">
+                <span class="subject-icon">📗</span>
+                <h3>اللغة الإنجليزية</h3>
+            </div>
+            <div class="subject-card" onclick="startExam('religion')">
+                <span class="subject-icon">📕</span>
+                <h3>التربية الإسلامية</h3>
+            </div>
+            <div class="subject-card" onclick="startExam('history')">
+                <span class="subject-icon">📙</span>
+                <h3>التاريخ</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة الامتحان -->
+    <div id="examPage" class="page">
+        <button class="back-btn" onclick="showSubjects(currentExamType)">← الرجوع للمواد</button>
+        <div class="exam-header">
+            <h3 id="subjectTitle"></h3>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <span id="questionCounter">السؤال 1 من 40</span>
+        </div>
+
+        <div id="questionContainer" class="question-container">
+            <!-- يتم تعبئة الأسئلة هنا بواسطة JavaScript -->
+        </div>
+
+        <div class="navigation-buttons">
+            <button id="prevBtn" onclick="previousQuestion()" class="nav-btn" disabled>السابق</button>
+            <button id="nextBtn" onclick="nextQuestion()" class="nav-btn">التالي</button>
+        </div>
+    </div>
+
+    <!-- صفحة النتيجة -->
+    <div id="resultPage" class="page">
+        <button class="back-btn" onclick="showHome()">← الرجوع للرئيسية</button>
+        <div class="result-container">
+            <h2>النتيجة النهائية</h2>
+            <div class="score-circle">
+                <span id="scorePercentage">0%</span>
+            </div>
+            <div id="resultDetails" class="result-details">
+                <!-- تفاصيل النتيجة هنا -->
+            </div>
+            <button class="restart-btn" onclick="showHome()">حل امتحان آخر</button>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الموقع
+        let currentExamType = '';
+        let currentSubject = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let examCompleted = false;
+
+        // أسئلة الدين (ال40 سؤالاً)
+        const religionQuestions = [
+            {
+                question: "1- قول الله تعالى الذي يشير إلى الاعتبار من الأمم السابقة، هو:",
+                options: [
+                    "أ) ﴿وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا﴾",
+                    "ب) ﴿وَلَا تَكُونُوا كَالَّذِينَ تَفَرَّقُوا وَاخْتَلَفُوا مِنْ بَعْدِ مَا جَاءَهُمُ الْبَيِّنَاتُ﴾",
+                    "ج) ﴿وَلْتَكُنْ مِنْكُمْ أُمَّةٌ يَدْعُونَ إِلَى الْخَيْرِ وَيَأْمُرُونَ بِالْمَعْرُوفِ وَيَنْهَوْنَ عَنِ الْمُنْكَرِ﴾",
+                    "د) ﴿يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ حَقَّ تُقَاتِهِ وَلَا تَمُوتُنَّ إِلَّا وَأَنْتُمْ مُسْلِمُونَ﴾"
+                ],
+                correct: 1
+            },
+            {
+                question: "2- يكون انتقاء الشبهات إذا أصابت النجاسة جزءاً من الثوب، ولم يعلم صاحبه موضعها بغسل:",
+                options: [
+                    "أ) جزء من الثوب",
+                    "ب) نصف الثوب",
+                    "ج) أكثر الثوب",
+                    "د) الثوب كله"
+                ],
+                correct: 3
+            },
+            {
+                question: "3- من صور الكفر العملي التي تخرج صاحبها من الإسلام:",
+                options: [
+                    "أ) إنكار ركن من أركان الإيمان",
+                    "ب) سب الذات الإلهية",
+                    "ج) إنكار حكم قطعي معلوم من الدين بالضرورة",
+                    "د) قتال المسلم للمسلم"
+                ],
+                correct: 1
+            },
+            {
+                question: "4- مبدأ الإسلام الذي دعا إليه قول الله تعالى: ﴿يَا أَيُّهَا النَّاسُ إِنَّا خَلَقْنَاكُمْ مِنْ ذَكَرٍ وَأُنْثَى وَجَعَلْنَاكُمْ شُعُوبًا وَقَبَائِلَ لِتَعَارَفُوا إِنَّ أَكْرَمَكُمْ عِنْدَ اللَّهِ أَتْقَاكُمْ﴾، هو:",
+                options: [
+                    "أ) المساواة",
+                    "ب) الأمن",
+                    "ج) الحرية",
+                    "د) تسخير الكون"
+                ],
+                correct: 0
+            },
+            {
+                question: "5- حكم عدول أحد الخاطبين عن الخطبة إذا اعتقد بعدم وجود مصلحة من هذا الزواج، هو:",
+                options: [
+                    "أ) واجب",
+                    "ب) مندوب",
+                    "ج) مباح",
+                    "د) حرام"
+                ],
+                correct: 2
+            },
+            {
+                question: "6- من صور الجهاد بالمعنى العام:",
+                options: [
+                    "أ) القتال في سبيل الله",
+                    "ب) دعوة الناس إلى الخير",
+                    "ج) بناء المصانع الحربية",
+                    "د) الإعلام والتعبئة المعنوية"
+                ],
+                correct: 1
+            },
+            {
+                question: "7- من جوانب خدمة القرآن الكريم في زمن الخليفة الراشد علي بن أبي طالب رضي الله عنه:",
+                options: [
+                    "أ) جمع القرآن الكريم",
+                    "ب) نسخ القرآن الكريم",
+                    "ج) ضبط المصحف",
+                    "د) تنقيط الحروف المتشابهة"
+                ],
+                correct: 2
+            },
+            {
+                question: "8- واحدة من العبارات الآتية صحيحة فيما يتعلق بالعزيمة والرخصة:",
+                options: [
+                    "أ) العزيمة هي الأصل والرخصة استثناء",
+                    "ب) الرخصة هي الأصل والعزيمة استثناء",
+                    "ج) العزيمة والرخصة كلتاهما أصل",
+                    "د) الرخصة لا يجوز تركها إلا لعذر شرعي"
+                ],
+                correct: 0
+            },
+            {
+                question: "9- سبب معركة مؤتة هو قتل شرحبيل بن عمرو الغساني الصحابي الجليل:",
+                options: [
+                    "أ) المغيرة بن شعبة رضي الله عنه",
+                    "ب) الحارث بن عمير رضي الله عنه",
+                    "ج) زيد بن حارثة رضي الله عنه",
+                    "د) عبد الله بن رواحة رضي الله عنه"
+                ],
+                correct: 1
+            },
+            {
+                question: "10- حكم زواج المسلمة من غير المسلم:",
+                options: [
+                    "أ) مكروه",
+                    "ب) مباح",
+                    "ج) مندوب",
+                    "د) حرام"
+                ],
+                correct: 3
+            },
+            {
+                question: "11- أم المؤمنين التي أشارت على النبي ﷺ يوم الحديبية أن يبدأ بالتحلل من إحرامه بحلق شعره وذبح هديه، هي:",
+                options: [
+                    "أ) خديجة رضي الله عنها",
+                    "ب) عائشة رضي الله عنها",
+                    "ج) ميمونة رضي الله عنها",
+                    "د) أم سلمة رضي الله عنها"
+                ],
+                correct: 3
+            },
+            {
+                question: "12- نزل قول الله تعالى: ﴿وَلَا تَحْسَبَنَّ الَّذِينَ قُتِلُوا فِي سَبِيلِ اللَّهِ أَمْوَاتًا بَلْ أَحْيَاءٌ عِنْدَ رَبِّهِمْ يُرْزَقُونَ﴾ تسلية للصحابة الكرام وتثبيتاً لقلوبهم بعد معركة:",
+                options: [
+                    "أ) مؤتة",
+                    "ب) أحد",
+                    "ج) بدر",
+                    "د) تبوك"
+                ],
+                correct: 1
+            },
+            {
+                question: "13- المراد بـ 'كثرة السؤال' الوارد في حديث النبي ﷺ: 'إن الله يرضى لكم...'، هو الإكثار من:",
+                options: [
+                    "أ) سؤال أهل العلم",
+                    "ب) السؤال في غير حاجة",
+                    "ج) دعاء الله تعالى",
+                    "د) طلب الدعاء من الناس"
+                ],
+                correct: 1
+            },
+            {
+                question: "14- سبب عزم النبي ﷺ على فتح مكة، هو:",
+                options: [
+                    "أ) إجبار قريش على الدخول في الإسلام",
+                    "ب) الانتقام لما حصل للمسلمين في معركة أحد",
+                    "ج) استرجاع ما أخذته قريش من المسلمين",
+                    "د) نقض قريش صلح الحديبية"
+                ],
+                correct: 3
+            },
+            {
+                question: "15- قول الله تعالى الذي يدل على إيجابية الشريعة الإسلامية في نظرتها للحياة:",
+                options: [
+                    "أ) ﴿قَالَ وَمَنْ يَقْنَطُ مِنْ رَحْمَةِ رَبِّهِ إِلَّا الضَّالُّونَ﴾",
+                    "ب) ﴿وَمَنْ يُؤْمِنْ بِاللَّهِ يَهْدِ قَلْبَهُ﴾",
+                    "ج) ﴿فَإِذَا قُضِيَتِ الصَّلَاةُ فَانْتَشِرُوا فِي الْأَرْضِ وَابْتَغُوا مِنْ فَضْلِ اللَّهِ﴾",
+                    "د) ﴿وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَى﴾"
+                ],
+                correct: 2
+            },
+            {
+                question: "16- الترتيب الصحيح للولي عن المرأة في الزواج، هو:",
+                options: [
+                    "أ) الأب، الأخ الشقيق، الجد، الأخ لأب",
+                    "ب) الأب، الجد، الأخ الشقيق، الأخ لأب",
+                    "ج) الأب، الأخ الشقيق، الأخ لأب، الجد",
+                    "د) الأب، الجد، الأخ لأب، الأخ الشقيق"
+                ],
+                correct: 1
+            },
+            {
+                question: "17- الحكم الشرعي في عمل المرأة وفق الضوابط الشرعية:",
+                options: [
+                    "أ) واجب",
+                    "ب) مندوب",
+                    "ج) مكروه",
+                    "د) مباح"
+                ],
+                correct: 3
+            },
+            {
+                question: "18- يشير قول الله تعالى في سورة الروم ﴿وَابْتَغُوا مِنْ فَضْلِهِ﴾ إلى الدعوة في طلب:",
+                options: [
+                    "أ) العلم",
+                    "ب) الرزق",
+                    "ج) الزواج",
+                    "د) الغيث"
+                ],
+                correct: 1
+            },
+            {
+                question: "19- من الأحكام التي وردت في السنة النبوية ولم ترد في القرآن الكريم حرمة:",
+                options: [
+                    "أ) الجمع بين المرأة وخالتها",
+                    "ب) أكل أموال اليتيم",
+                    "ج) الجمع بين المرأة وأختها",
+                    "د) أكل أموال الناس بالباطل"
+                ],
+                correct: 0
+            },
+            {
+                question: "20- من القواعد الفقهية المستندة إلى العرف:",
+                options: [
+                    "أ) الضرورات تبيح المحظورات",
+                    "ب) العادة محكمة",
+                    "ج) المشقة تجلب التيسير",
+                    "د) لا ضرر ولا ضرار"
+                ],
+                correct: 1
+            },
+            {
+                question: "21- من الحقوق المشتركة بين الزوجين:",
+                options: [
+                    "أ) الإرث",
+                    "ب) المهر",
+                    "ج) النفقة",
+                    "د) الطاعة"
+                ],
+                correct: 0
+            },
+            {
+                question: "22- يدل قول الله تعالى: ﴿فَيَغْفِرُ لِمَنْ يَشَاءُ وَيُعَذِّبُ مَنْ يَشَاءُ﴾، على:",
+                options: [
+                    "أ) كمال قدرة الله تعالى",
+                    "ب) رحمة الله تعالى",
+                    "ج) سعة علم الله تعالى",
+                    "د) سعة ملك الله تعالى"
+                ],
+                correct: 0
+            },
+            {
+                question: "23- المفهوم الذي يُقصد به أن الله تعالى خلق المخلوقات وأرشدها إلى ما يُصلح شأنها ومعاشها لكي تؤدي وظيفتها في الحياة، هو:",
+                options: [
+                    "أ) السببية",
+                    "ب) الإتقان",
+                    "ج) الهداية",
+                    "د) الفطرة"
+                ],
+                correct: 2
+            },
+            {
+                question: "24- من الأمثلة على الإعجاز العلمي في القرآن الكريم:",
+                options: [
+                    "أ) القصاص",
+                    "ب) تقديم لفظ السارق على السارقة",
+                    "ج) المواريث",
+                    "د) أطوار خلق الجنين"
+                ],
+                correct: 3
+            },
+            {
+                question: "25- الحكم الشرعي في الأمر بالمعروف والنهي عن المنكر:",
+                options: [
+                    "أ) فرض عين",
+                    "ب) فرض كفاية",
+                    "ج) سنة مؤكدة",
+                    "د) مستحب"
+                ],
+                correct: 1
+            },
+            {
+                question: "26- قول الله تعالى الذي يشير إلى ما يحصل عند النفخة الأولى من أحداث، هو:",
+                options: [
+                    "أ) ﴿إِذَا السَّمَاءُ انْفَطَرَتْ﴾",
+                    "ب) ﴿يَوْمَ تَشَقَّقُ الْأَرْضُ عَنْهُمْ سِرَاعًا﴾",
+                    "ج) ﴿وَنَضَعُ الْمَوَازِينَ الْقِسْطَ لِيَوْمِ الْقِيَامَةِ﴾",
+                    "د) ﴿وَسِيقَ الَّذِينَ اتَّقَوْا رَبَّهُمْ إِلَى الْجَنَّةِ زُمَرًا﴾"
+                ],
+                correct: 0
+            },
+            {
+                question: "27- إحدى المسائل الآتية يجوز فيها الاجتهاد:",
+                options: [
+                    "أ) مقدار نصاب الورثة",
+                    "ب) التبرع بالأعضاء",
+                    "ج) وجوب الصلوات الخمس",
+                    "د) أركان الإيمان"
+                ],
+                correct: 1
+            },
+            {
+                question: "28- المفهوم الذي يدل على المنفعة التي تحصل للناس عن طريق جلب النفع لهم أو دفع الضرر عنهم، هو:",
+                options: [
+                    "أ) الحاجيات",
+                    "ب) الوسطية",
+                    "ج) التحسينات",
+                    "د) المصلحة"
+                ],
+                correct: 3
+            },
+            {
+                question: "29- يُطلق على كتب الحديث الشريف التي صُنفت بحسب أسماء الرواة من الصحابة الكرام:",
+                options: [
+                    "أ) الصحاح",
+                    "ب) المسانيد",
+                    "ج) السنن",
+                    "د) الجوامع"
+                ],
+                correct: 1
+            },
+            {
+                question: "30- كان من منهج النبي ﷺ في حياته، أن:",
+                options: [
+                    "أ) يصوم الدهر ولا يفطر",
+                    "ب) يعتزل النساء",
+                    "ج) يصوم ويفطر",
+                    "د) يصلي ولا يرقد"
+                ],
+                correct: 2
+            },
+            {
+                question: "31- الصحابي الجليل الذي كان أكثر المنفقين في تجهيز جيش العسرة، هو:",
+                options: [
+                    "أ) أبو بكر الصديق رضي الله عنه",
+                    "ب) عمر بن الخطاب رضي الله عنه",
+                    "ج) عثمان بن عفان رضي الله عنه",
+                    "د) علي بن أبي طالب رضي الله عنه"
+                ],
+                correct: 2
+            },
+            {
+                question: "32- مناقشة إحدى الصحابيات سيدنا عمر بن الخطاب رضي الله عنه في مسألة تحديد مهور النساء يُعد مثالاً على حق من حقوق المرأة السياسية، هو:",
+                options: [
+                    "أ) المشاركة في صنع القرار",
+                    "ب) تقديم النصيحة لولي الأمر",
+                    "ج) المشاورة في الرأي العام",
+                    "د) ممارسة الحق في إعطاء الأمان"
+                ],
+                correct: 0
+            },
+            {
+                question: "33- جميع ما يأتي صحيح فيما يتعلق بالوصية، ما عدا:",
+                options: [
+                    "أ) أن لا تزيد عن الثلث",
+                    "ب) جواز الرجوع عنها في حياة الموصي",
+                    "ج) أن لا تكون لوارث",
+                    "د) بطلانها بموت الموصي قبل الموصى له"
+                ],
+                correct: 3
+            },
+            {
+                question: "34- توفي رجل وعنده زوجة وولدان، فإن نصيب الزوجة من الميراث:",
+                options: [
+                    "أ) النصف",
+                    "ب) الربع",
+                    "ج) الثلث",
+                    "د) الثمن"
+                ],
+                correct: 3
+            },
+            {
+                question: "35- مجال الوسطية الذي يشير إليه قول الله تعالى: ﴿قَدْ أَفْلَحَ مَنْ زَكَّاهَا﴾، هو:",
+                options: [
+                    "أ) الاعتقاد",
+                    "ب) الأخلاق",
+                    "ج) التشريع",
+                    "د) المعاملات"
+                ],
+                correct: 1
+            },
+            {
+                question: "36- من الأوقاف العلمية التي أوقفها جلالة الملك عبد الله الثاني ابن الحسين -حفظه الله- وقفية الإمام السيوطي في:",
+                options: [
+                    "أ) مسجد السلط الكبير",
+                    "ب) المسجد الحسيني الكبير",
+                    "ج) المسجد الأقصى المبارك",
+                    "د) مسجد الحسين بن طلال"
+                ],
+                correct: 1
+            },
+            {
+                question: "37- من الأحكام الشرعية التي تقع في مرتبة التحسينات:",
+                options: [
+                    "أ) نوافل الطاعات",
+                    "ب) تحريم السرقة",
+                    "ج) مشروعية الزواج",
+                    "د) إباحة الجمع بين الصلوات للمسافر"
+                ],
+                correct: 0
+            },
+            {
+                question: "38- يشير قول الله تعالى: ﴿وَأَقِمِ الصَّلَاةَ إِنَّ الصَّلَاةَ تَنْهَى عَنِ الْفَحْشَاءِ وَالْمُنْكَرِ﴾، إلى أحد التدابير الوقائية للحد من وقوع الجريمة، هو:",
+                options: [
+                    "أ) تطبيق العقوبات على مرتكب الجريمة",
+                    "ب) معالجة أسباب ارتكاب الجريمة",
+                    "ج) تعميق الإيمان بالله تعالى",
+                    "د) تعميق انتماء الفرد إلى وطنه"
+                ],
+                correct: 2
+            },
+            {
+                question: "39- في قول النبي ﷺ في حجة الوداع: 'ألا كل شيء من أمر الجاهلية تحت قدمي موضوع، ودماء الجاهلية موضوعة'، تأكيد على:",
+                options: [
+                    "أ) مبدأ المساواة",
+                    "ب) حرمة الربا",
+                    "ج) حرمة الثأر",
+                    "د) نبذ الفرقة"
+                ],
+                correct: 2
+            },
+            {
+                question: "40- يدل قول الله تعالى: ﴿هُوَ الَّذِي جَعَلَ لَكُمُ الْأَرْضَ ذَلُولًا فَامْشُوا فِي مَنَاكِبِهَا﴾، على حق الإنسان في:",
+                options: [
+                    "أ) التملك",
+                    "ب) التعليم",
+                    "ج) الحرية",
+                    "د) العمل"
+                ],
+                correct: 3
+            }
+        ];
+
+        // دوال الموقع
+        function showHome() {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('homePage').classList.add('active');
+            resetExam();
+        }
+
+        function showSubjects(type) {
+            currentExamType = type;
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('subjectsPage').classList.add('active');
+            document.getElementById('examTypeTitle').textContent = `الامتحان ${type} - اختر المادة`;
+        }
+
+        function startExam(subject) {
+            currentSubject = subject;
+            currentQuestions = [];
+            userAnswers = [];
+            currentQuestionIndex = 0;
+            
+            if (subject === 'religion') {
+                currentQuestions = religionQuestions;
+            } else {
+                // أسئلة افتراضية للمواد الأخرى (يمكنك تعديلها)
+                currentQuestions = Array(40).fill({
+                    question: "هذا سؤال تجريبي للمادة - يرجى إضافة الأسئلة لاحقاً",
+                    options: ["الخيار أ", "الخيار ب", "الخيار ج", "الخيار د"],
+                    correct: 0
+                });
+            }
+            
+            userAnswers = new Array(currentQuestions.length).fill(null);
+            
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('examPage').classList.add('active');
+            
+            let subjectName = '';
+            switch(subject) {
+                case 'arabic': subjectName = 'اللغة العربية'; break;
+                case 'english': subjectName = 'اللغة الإنجليزية'; break;
+                case 'religion': subjectName = 'التربية الإسلامية'; break;
+                case 'history': subjectName = 'التاريخ'; break;
+            }
+            document.getElementById('subjectTitle').textContent = `${currentExamType} - ${subjectName}`;
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            if (!currentQuestions.length) return;
+            
+            const question = currentQuestions[currentQuestionIndex];
+            const container = document.getElementById('questionContainer');
+            
+            let optionsHtml = '';
+            question.options.forEach((option, index) => {
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                optionsHtml += `
+                    <div class="option ${isSelected ? 'selected' : ''}" onclick="selectOption(${index})">
+                        <input type="radio" name="option" value="${index}" ${isSelected ? 'checked' : ''}>
+                        <span>${option}</span>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = `
+                <div class="question-text">${question.question}</div>
+                <div class="options-container">
+                    ${optionsHtml}
+                </div>
+            `;
+            
+            // تحديث شريط التقدم
+            document.getElementById('questionCounter').textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}`;
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            
+            // تحديث أزرار التنقل
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === currentQuestions.length - 1 ? 'عرض النتيجة' : 'التالي';
+        }
+
+        function selectOption(index) {
+            userAnswers[currentQuestionIndex] = index;
+            displayQuestion();
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('الرجاء اختيار إجابة قبل الانتقال للسؤال التالي');
+                return;
+            }
+            
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function showResult() {
+            // حساب النتيجة
+            let correctCount = 0;
+            let resultDetails = [];
+            
+            currentQuestions.forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.correct;
+                if (isCorrect) correctCount++;
+                
+                resultDetails.push({
+                    question: question.question.substring(0, 50) + '...',
+                    userAnswer: userAnswers[index] !== null ? question.options[userAnswers[index]] : 'لم يجب',
+                    correctAnswer: question.options[question.correct],
+                    isCorrect: isCorrect
+                });
+            });
+            
+            const percentage = Math.round((correctCount / currentQuestions.length) * 100);
+            
+            // عرض النتيجة
+            document.getElementById('scorePercentage').textContent = `${percentage}%`;
+            
+            let detailsHtml = '<h3>تفاصيل الإجابات:</h3>';
+            resultDetails.forEach((detail, index) => {
+                detailsHtml += `
+                    <div class="result-item ${detail.isCorrect ? 'correct' : 'wrong'}">
+                        <strong>السؤال ${index + 1}:</strong> ${detail.isCorrect ? '✓' : '✗'}<br>
+                        <small>إجابتك: ${detail.userAnswer}</small><br>
+                        <small>الإجابة الصحيحة: ${detail.correctAnswer}</small>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('resultDetails').innerHTML = detailsHtml;
+            
+            // الانتقال لصفحة النتيجة
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('resultPage').classList.add('active');
+        }
+
+        function resetExam() {
+            currentQuestions = [];
+            userAnswers = [];
+            currentQuestionIndex = 0;
+            currentExamType = '';
+            currentSubject = '';
+        }
+    </script>
+</body>
+</html>
