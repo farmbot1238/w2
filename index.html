@@ -19,7 +19,6 @@
             position: relative;
         }
 
-        /* تأثير السحب في الخلفية */
         body::before {
             content: '';
             position: fixed;
@@ -45,7 +44,6 @@
             display: block;
         }
 
-        /* الهيدر */
         .header {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -72,7 +70,6 @@
             padding-bottom: 5px;
         }
 
-        /* الأيقونات التزيينية */
         .decorative-icons {
             text-align: center;
             margin: 30px 0;
@@ -102,7 +99,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        /* بطاقات اختيار نوع الامتحان */
         .exam-type-selection {
             display: flex;
             justify-content: center;
@@ -144,7 +140,6 @@
             font-size: 1.1em;
         }
 
-        /* شبكة المواد */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -180,7 +175,6 @@
             font-size: 1.5em;
         }
 
-        /* أزرار الرجوع */
         .back-btn {
             background: rgba(255, 255, 255, 0.9);
             border: none;
@@ -199,7 +193,6 @@
             transform: translateX(5px);
         }
 
-        /* صفحة الامتحان */
         .exam-header {
             background: rgba(255, 255, 255, 0.9);
             padding: 20px 30px;
@@ -286,7 +279,6 @@
             cursor: pointer;
         }
 
-        /* أزرار التنقل */
         .navigation-buttons {
             display: flex;
             justify-content: space-between;
@@ -316,7 +308,6 @@
             cursor: not-allowed;
         }
 
-        /* صفحة النتيجة */
         .result-container {
             background: rgba(255, 255, 255, 0.95);
             max-width: 700px;
@@ -395,7 +386,6 @@
             transform: scale(1.05);
         }
 
-        /* صفحة العنوان */
         .page-title {
             text-align: center;
             color: white;
@@ -404,7 +394,13 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        /* للهواتف */
+        .loading-message {
+            text-align: center;
+            font-size: 1.5em;
+            color: #1e3c72;
+            margin-top: 50px;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2.2em;
@@ -428,25 +424,15 @@
                 padding: 20px;
             }
         }
-        /* تنسيق رسالة التحميل */
-        .loading-message {
-            text-align: center;
-            font-size: 1.5em;
-            color: white;
-            margin-top: 50px;
-        }
     </style>
 </head>
 <body>
-    <!-- شريط العنوان العلوي -->
     <div class="header">
         <h1>متعاونين على التفوق</h1>
         <p class="subtitle">موقع مخصص للامتحانات الوزارية السابقة - نظامي وتكميلي</p>
     </div>
 
-    <!-- الصفحة الرئيسية -->
     <div id="homePage" class="page active">
-        <!-- أيقونات جميلة -->
         <div class="decorative-icons">
             <span>📚</span>
             <span>✨</span>
@@ -471,7 +457,6 @@
         </div>
     </div>
 
-    <!-- صفحة اختيار المواد -->
     <div id="subjectsPage" class="page">
         <button class="back-btn" onclick="showHome()">← الرجوع للرئيسية</button>
         <h2 id="examTypeTitle" class="page-title"></h2>
@@ -496,7 +481,6 @@
         </div>
     </div>
 
-    <!-- صفحة الامتحان -->
     <div id="examPage" class="page">
         <button class="back-btn" onclick="showSubjects(currentExamType)">← الرجوع للمواد</button>
         <div class="exam-header">
@@ -512,12 +496,11 @@
         </div>
 
         <div class="navigation-buttons">
-            <button id="prevBtn" onclick="previousQuestion()" class="nav-btn" disabled>السابق</button>
-            <button id="nextBtn" onclick="nextQuestion()" class="nav-btn">التالي</button>
+            <button id="prevBtn" onclick="previousQuestion()" class="nav-btn">السابق</button>
+            <button id="nextBtn" onclick="nextQuestion()" class="nav-btn" style="display: none;">التالي</button>
         </div>
     </div>
 
-    <!-- صفحة النتيجة -->
     <div id="resultPage" class="page">
         <button class="back-btn" onclick="showHome()">← الرجوع للرئيسية</button>
         <div class="result-container">
@@ -525,49 +508,39 @@
             <div class="score-circle">
                 <span id="scorePercentage">0%</span>
             </div>
-            <div id="resultDetails" class="result-details">
-                <!-- تفاصيل النتيجة هنا -->
-            </div>
+            <div id="resultDetails" class="result-details"></div>
             <button class="restart-btn" onclick="showHome()">حل امتحان آخر</button>
         </div>
     </div>
 
     <script>
-        // المتغيرات العامة للموقع
         let currentExamType = '';
         let currentSubject = '';
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let userAnswers = [];
-        let examCompleted = false;
+        let autoMoveTimeout = null;
 
-        // دوال الموقع الأساسية
         function showHome() {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+            if (autoMoveTimeout) clearTimeout(autoMoveTimeout);
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('homePage').classList.add('active');
             resetExam();
         }
 
         function showSubjects(type) {
             currentExamType = type;
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('subjectsPage').classList.add('active');
             document.getElementById('examTypeTitle').textContent = `الامتحان ${type} - اختر المادة`;
         }
 
-        // دالة لتحميل الأسئلة من ملف خارجي
         async function loadQuestions(subject, examType) {
-            // إظهار رسالة تحميل في حاوية الأسئلة
             const container = document.getElementById('questionContainer');
             if (container) {
                 container.innerHTML = '<div class="loading-message">جاري تحميل الأسئلة...</div>';
             }
             
-            // تحديد اسم الملف بناءً على المادة
             let fileName = '';
             switch(subject) {
                 case 'arabic': fileName = 'questions_arabic.js'; break;
@@ -583,19 +556,16 @@
             }
             
             try {
-                // دالة لتحميل الملف وإرجاع محتواه
                 const loadFile = (file) => {
                     return new Promise((resolve, reject) => {
                         const script = document.createElement('script');
                         script.src = file;
                         script.onload = () => {
-                            // نفترض أن الملف المحمل يعين كائنًا عامًا مثل `window.questionBank`
                             if (window.questionBank && window.questionBank[subject] && window.questionBank[subject][examType]) {
                                 resolve(window.questionBank[subject][examType]);
                             } else {
                                 reject(new Error(`لم يتم العثور على الأسئلة للمادة ${subject} ونوع الامتحان ${examType}`));
                             }
-                            // تنظيف المتغير العام بعد الاستخدام لتجنب التعارضات
                             delete window.questionBank;
                         };
                         script.onerror = () => reject(new Error(`فشل في تحميل الملف: ${file}`));
@@ -616,17 +586,13 @@
             userAnswers = [];
             currentQuestionIndex = 0;
             
-            // تحميل الأسئلة بناءً على المادة ونوع الامتحان (نظامي/تكميلي)
             const loadedQuestions = await loadQuestions(subject, currentExamType);
             
             if (loadedQuestions && loadedQuestions.length > 0) {
                 currentQuestions = loadedQuestions;
                 userAnswers = new Array(currentQuestions.length).fill(null);
                 
-                // الانتقال لصفحة الامتحان بعد تحميل الأسئلة
-                document.querySelectorAll('.page').forEach(page => {
-                    page.classList.remove('active');
-                });
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 document.getElementById('examPage').classList.add('active');
                 
                 let subjectName = '';
@@ -641,7 +607,6 @@
                 displayQuestion();
             } else {
                 alert(`عذراً، لا توجد أسئلة متاحة حالياً لمادة ${subject} (نوع الامتحان: ${currentExamType}). الرجاء إضافة الأسئلة في الملف الخاص بها.`);
-                // العودة لصفحة المواد في حالة الخطأ
                 showSubjects(currentExamType);
             }
         }
@@ -670,44 +635,66 @@
                 </div>
             `;
             
-            // تحديث شريط التقدم
             document.getElementById('questionCounter').textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}`;
             const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
             document.getElementById('progressFill').style.width = `${progress}%`;
             
-            // تحديث أزرار التنقل
             document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-            document.getElementById('nextBtn').textContent = currentQuestionIndex === currentQuestions.length - 1 ? 'عرض النتيجة' : 'التالي';
         }
 
         function selectOption(index) {
-            userAnswers[currentQuestionIndex] = index;
-            displayQuestion();
-        }
-
-        function nextQuestion() {
-            if (userAnswers[currentQuestionIndex] === null) {
-                alert('الرجاء اختيار إجابة قبل الانتقال للسؤال التالي');
-                return;
-            }
+            if (autoMoveTimeout) clearTimeout(autoMoveTimeout);
             
-            if (currentQuestionIndex < currentQuestions.length - 1) {
-                currentQuestionIndex++;
-                displayQuestion();
+            userAnswers[currentQuestionIndex] = index;
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt, i) => {
+                if (i === index) {
+                    opt.classList.add('selected');
+                    const radio = opt.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+            
+            if (currentQuestionIndex === currentQuestions.length - 1) {
+                autoMoveTimeout = setTimeout(() => {
+                    showResult();
+                }, 300);
             } else {
-                showResult();
+                autoMoveTimeout = setTimeout(() => {
+                    currentQuestionIndex++;
+                    displayQuestion();
+                }, 300);
             }
         }
 
         function previousQuestion() {
+            if (autoMoveTimeout) clearTimeout(autoMoveTimeout);
+            
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
                 displayQuestion();
             }
         }
 
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] !== null) {
+                if (currentQuestionIndex < currentQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion();
+                } else {
+                    showResult();
+                }
+            } else {
+                alert('الرجاء اختيار إجابة قبل الانتقال للسؤال التالي');
+            }
+        }
+
         function showResult() {
-            // حساب النتيجة
+            if (autoMoveTimeout) clearTimeout(autoMoveTimeout);
+            
             let correctCount = 0;
             let resultDetails = [];
             
@@ -716,7 +703,7 @@
                 if (isCorrect) correctCount++;
                 
                 resultDetails.push({
-                    question: question.question.substring(0, 50) + '...',
+                    question: question.question,
                     userAnswer: userAnswers[index] !== null ? question.options[userAnswers[index]] : 'لم يجب',
                     correctAnswer: question.options[question.correct],
                     isCorrect: isCorrect
@@ -725,26 +712,23 @@
             
             const percentage = Math.round((correctCount / currentQuestions.length) * 100);
             
-            // عرض النتيجة
             document.getElementById('scorePercentage').textContent = `${percentage}%`;
             
-            let detailsHtml = '<h3>تفاصيل الإجابات:</h3>';
+            let detailsHtml = '<h3>📋 تفاصيل الإجابات:</h3>';
             resultDetails.forEach((detail, index) => {
                 detailsHtml += `
                     <div class="result-item ${detail.isCorrect ? 'correct' : 'wrong'}">
-                        <strong>السؤال ${index + 1}:</strong> ${detail.isCorrect ? '✓' : '✗'}<br>
-                        <small>إجابتك: ${detail.userAnswer}</small><br>
-                        <small>الإجابة الصحيحة: ${detail.correctAnswer}</small>
+                        <strong>السؤال ${index + 1}:</strong> ${detail.isCorrect ? '✅' : '❌'}<br>
+                        <small>📌 ${detail.question.substring(0, 80)}${detail.question.length > 80 ? '...' : ''}</small><br>
+                        <small>✏️ إجابتك: ${detail.userAnswer}</small><br>
+                        <small>✔️ الإجابة الصحيحة: ${detail.correctAnswer}</small>
                     </div>
                 `;
             });
             
             document.getElementById('resultDetails').innerHTML = detailsHtml;
             
-            // الانتقال لصفحة النتيجة
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('resultPage').classList.add('active');
         }
 
@@ -754,6 +738,7 @@
             currentQuestionIndex = 0;
             currentExamType = '';
             currentSubject = '';
+            if (autoMoveTimeout) clearTimeout(autoMoveTimeout);
         }
     </script>
 </body>
