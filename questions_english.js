@@ -283,7 +283,7 @@ window.questionBank = {
                 correct: 2
             },
             {
-                question: "29- According to the report, building a luxury hotel will provide:",
+                question: "📖 **Text:**\n\n\"When developers released a statement that they were going to build a luxury new hotel at the local beach, everyone in the town was very excited. There have been talks for years about opportunities for new developments, but they never seem to happen. We all have to seize the opportunity and realise that the hotel will not only give us work, but offer improvements to the whole area around the beach. The developers have promised a new road with wide pavements to and from the beach and a replacement of the sad old beach restaurants which have been there for years. We have asked for such development for years and it was heartwarming to know that the developers have come up with a solution to help local people.\"\n\n---\nThe hotel will provide 'opportunities' for:",
                 options: [
                     "A) Only new roads",
                     "B) Jobs and area improvements",
@@ -293,27 +293,27 @@ window.questionBank = {
                 correct: 1
             },
             {
-                question: "30- The word in the report that means 'causing feelings of happiness' is:",
+                question: "📖 **Text:**\n\n\"When developers released a statement that they were going to build a luxury new hotel at the local beach, everyone in the town was very excited. There have been talks for years about opportunities for new developments, but they never seem to happen. We all have to seize the opportunity and realise that the hotel will not only give us work, but offer improvements to the whole area around the beach. The developers have promised a new road with wide pavements to and from the beach and a replacement of the sad old beach restaurants which have been there for years. We have asked for such development for years and it was heartwarming to know that the developers have come up with a solution to help local people.\"\n\n---\nThe developers have promised to make two changes:",
+                options: [
+                    "A) Build a new school and a park",
+                    "B) A new road and replacement of old restaurants",
+                    "C) Close the beach and build a fence",
+                    "D) Stop tourism and focus on farming"
+                ],
+                correct: 1
+            },
+            {
+                question: "📖 **Text:**\n\n\"When developers released a statement that they were going to build a luxury new hotel at the local beach, everyone in the town was very excited. There have been talks for years about opportunities for new developments, but they never seem to happen. We all have to seize the opportunity and realise that the hotel will not only give us work, but offer improvements to the whole area around the beach. The developers have promised a new road with wide pavements to and from the beach and a replacement of the sad old beach restaurants which have been there for years. We have asked for such development for years and it was heartwarming to know that the developers have come up with a solution to help local people.\"\n\n---\nThe word that means 'causing feelings of happiness' is:",
                 options: [
                     "A) Excited",
                     "B) Heartwarming",
                     "C) Solution",
-                    "D) Support"
+                    "D) Replacement"
                 ],
                 correct: 1
             },
             {
-                question: "31- The developers of the project have promised to:",
-                options: [
-                    "A) Build a new school",
-                    "B) Replace old beach restaurants",
-                    "C) Close the beach",
-                    "D) Stop the tourism"
-                ],
-                correct: 1
-            },
-            {
-                question: "32- The underlined pronoun 'they' in the first paragraph refers to:",
+                question: "📖 **Text:**\n\n\"When developers released a statement that they were going to build a luxury new hotel at the local beach, everyone in the town was very excited. There have been talks for years about opportunities for new developments, but they never seem to happen. We all have to seize the opportunity and realise that the hotel will not only give us work, but offer improvements to the whole area around the beach. The developers have promised a new road with wide pavements to and from the beach and a replacement of the sad old beach restaurants which have been there for years. We have asked for such development for years and it was heartwarming to know that the developers have come up with a solution to help local people.\"\n\n---\nThe underlined pronoun 'they' refers to:",
                 options: [
                     "A) Opportunities",
                     "B) Developers",
@@ -605,37 +605,27 @@ window.questionBank = {
                 correct: 2
             },
             {
-                question: "29- The Rosetta Stone is of historical importance because it is written in three languages, which are:",
+                question: "📖 **Text:**\n\n\"The Rosetta Stone is nothing much to look at. Nevertheless, visitors to the British Museum flow endlessly past the piece of rock, despite being unable to make out what is written on it. If they could, they might be disappointed to discover that it is a kind of tax document. The stone is of historical importance because the 'memo' it contains is written in three languages: Greek, an Egyptian language called Demotic, and hieroglyphics like those found on tombs... Rongorongo, which scholars believe may be a written language from Easter Island... Then there's the beautiful Voynich Manuscript... it has inspired many contemporary films and books.\"\n\n---\nThe stone is important because it is written in:",
                 options: [
                     "A) Greek, Arabic, and English",
-                    "B) Greek, Demotic, and hieroglyphics",
+                    "B) Greek, Demotic, and Hieroglyphics",
                     "C) Egyptian, Latin, and Greek",
                     "D) Demotic, Spanish, and French"
                 ],
                 correct: 1
             },
             {
-                question: "30- The Rosetta Stone is described as being a kind of:",
+                question: "📖 **Text:**\n\n\"The Rosetta Stone is nothing much to look at. Nevertheless, visitors to the British Museum flow endlessly past the piece of rock, despite being unable to make out what is written on it. If they could, they might be disappointed to discover that it is a kind of tax document. The stone is of historical importance because the 'memo' it contains is written in three languages: Greek, an Egyptian language called Demotic, and hieroglyphics like those found on tombs... Rongorongo, which scholars believe may be a written language from Easter Island... Then there's the beautiful Voynich Manuscript... it has inspired many contemporary films and books.\"\n\n---\nThe article states that the Rosetta Stone is a kind of:",
                 options: [
-                    "A) Tax document",
-                    "B) Personal letter",
+                    "A) Personal letter",
+                    "B) Tax document",
                     "C) Religious book",
                     "D) War map"
                 ],
-                correct: 0
+                correct: 1
             },
             {
-                question: "31- The Voynich Manuscript has inspired many contemporary:",
-                options: [
-                    "A) Wars",
-                    "B) Scientific discoveries",
-                    "C) Films and books",
-                    "D) Schools"
-                ],
-                correct: 2
-            },
-            {
-                question: "32- The phrasal verb in the article which means 'met or found something or someone' is:",
+                question: "📖 **Text:**\n\n\"The Rosetta Stone is nothing much to look at. Nevertheless, visitors to the British Museum flow endlessly past the piece of rock, despite being unable to make out what is written on it. If they could, they might be disappointed to discover that it is a kind of tax document. The stone is of historical importance because the 'memo' it contains is written in three languages: Greek, an Egyptian language called Demotic, and hieroglyphics like those found on tombs... Rongorongo, which scholars believe may be a written language from Easter Island... Then there's the beautiful Voynich Manuscript... it has inspired many contemporary films and books.\"\n\n---\nThe phrasal verb that means 'met or found something' is:",
                 options: [
                     "A) Figure out",
                     "B) Come across",
@@ -645,14 +635,24 @@ window.questionBank = {
                 correct: 1
             },
             {
-                question: "33- The underlined pronoun 'they' in the first paragraph of the text refers to:",
+                question: "📖 **Text:**\n\n\"The Rosetta Stone is nothing much to look at. Nevertheless, visitors to the British Museum flow endlessly past the piece of rock, despite being unable to make out what is written on it. If they could, they might be disappointed to discover that it is a kind of tax document. The stone is of historical importance because the 'memo' it contains is written in three languages: Greek, an Egyptian language called Demotic, and hieroglyphics like those found on tombs... Rongorongo, which scholars believe may be a written language from Easter Island... Then there's the beautiful Voynich Manuscript... it has inspired many contemporary films and books.\"\n\n---\nThe underlined pronoun 'they' refers to:",
                 options: [
                     "A) Visitors",
                     "B) Languages",
-                    "C) Museum",
-                    "D) Hieroglyphics"
+                    "C) Tombs",
+                    "D) Scholars"
                 ],
                 correct: 0
+            },
+            {
+                question: "📖 **Text:**\n\n\"The Rosetta Stone is nothing much to look at. Nevertheless, visitors to the British Museum flow endlessly past the piece of rock, despite being unable to make out what is written on it. If they could, they might be disappointed to discover that it is a kind of tax document. The stone is of historical importance because the 'memo' it contains is written in three languages: Greek, an Egyptian language called Demotic, and hieroglyphics like those found on tombs... Rongorongo, which scholars believe may be a written language from Easter Island... Then there's the beautiful Voynich Manuscript... it has inspired many contemporary films and books.\"\n\n---\nThe Voynich Manuscript has inspired many contemporary:",
+                options: [
+                    "A) Scientific discoveries",
+                    "B) Films and books",
+                    "C) Historical wars",
+                    "D) Language courses"
+                ],
+                correct: 1
             }
         ]
     }
